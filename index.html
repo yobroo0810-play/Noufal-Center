@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Noufal Central Apps - Beranda</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- LOGIN SCREEN -->
+  <div id="login-screen" class="login-container">
+    <div class="login-card">
+      <div class="login-header">
+        <div class="brand-logo"><i class="fa-solid fa-layer-group"></i></div>
+        <h2>Noufal Central Apps</h2>
+        <p>Sistem Manajemen Karyawan & Jobdesk</p>
+      </div>
+      <form id="login-form" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label><i class="fa-solid fa-user"></i> Username</label>
+          <input type="text" id="username" placeholder="Masukkan username" required value="admin" />
+        </div>
+        <div class="form-group">
+          <label><i class="fa-solid fa-lock"></i> Password</label>
+          <input type="password" id="password" placeholder="Masukkan password" required value="admin123" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block"><i class="fa-solid fa-right-to-bracket"></i> Masuk Ke Portal</button>
+      </form>
+      <div class="quick-login">
+        <p>Demo Akun (Klik untuk isi otomatis):</p>
+        <div class="quick-buttons">
+          <button class="btn-demo" type="button" onclick="fillLogin('admin', 'admin123')"><i class="fa-solid fa-user-shield"></i> Admin</button>
+          <button class="btn-demo" type="button" onclick="fillLogin('manager', 'manager123')"><i class="fa-solid fa-user-tie"></i> Manager</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- APP LAYOUT -->
+  <div id="app-screen" class="app-container hidden">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <i class="fa-solid fa-layer-group"></i>
+        <span>Noufal Central</span>
+      </div>
+      <nav class="sidebar-menu">
+        <a href="index.html" class="nav-item active"><i class="fa-solid fa-chart-pie"></i> Beranda</a>
+        <a href="karyawan.html" class="nav-item"><i class="fa-solid fa-users"></i> Data Karyawan</a>
+        <a href="jobdesk.html" class="nav-item"><i class="fa-solid fa-list-check"></i> Jobdesk & Tugas</a>
+        <a href="infografis.html" class="nav-item"><i class="fa-solid fa-chart-line"></i> Infografis & Analitik</a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" alt="Avatar" class="user-avatar" />
+          <div class="user-details">
+            <span>Admin User</span>
+            <small>Administrator</small>
+          </div>
+        </div>
+        <button class="btn-logout" onclick="logout()" title="Keluar"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-title">
+          <h1>Beranda Utama</h1>
+          <p>Ringkasan performa dan aktivitas perusahaan</p>
+        </div>
+        <div class="topbar-actions">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Cari data..." />
+          </div>
+          <button class="btn-icon"><i class="fa-solid fa-bell"></i></button>
+        </div>
+      </header>
+
+      <section class="page-content">
+        <div class="hero-banner">
+          <div class="hero-text">
+            <h2>Selamat Datang di Portal Noufal Central Apps! 🚀</h2>
+            <p>Sistem terpadu pengawasan efisiensi tim, alokasi jobdesk, dan analisis performa karyawan real-time.</p>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon blue"><i class="fa-solid fa-users"></i></div>
+            <div class="stat-info"><span class="stat-value" id="stat-total-emp">3</span><span class="stat-label">Total Karyawan</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green"><i class="fa-solid fa-bars-progress"></i></div>
+            <div class="stat-info"><span class="stat-value" id="stat-total-jobs">3</span><span class="stat-label">Total Jobdesk</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange"><i class="fa-solid fa-spinner"></i></div>
+            <div class="stat-info"><span class="stat-value" id="stat-ongoing-jobs">1</span><span class="stat-label">Progres Berjalan</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon purple"><i class="fa-solid fa-circle-check"></i></div>
+            <div class="stat-info"><span class="stat-value" id="stat-completed-jobs">1</span><span class="stat-label">Proyek Selesai</span></div>
+          </div>
+        </div>
+
+        <div class="dashboard-widgets">
+          <div class="widget-card">
+            <h3><i class="fa-solid fa-clock-rotate-left"></i> Aktivitas Terkini</h3>
+            <ul class="activity-list" id="recent-activity-list">
+              <li class="activity-item"><i class="fa-solid fa-circle-dot" style="color: #3b82f6;"></i> <div>Noufal Rizqi membuat modul Slicing UI Landing Page<div class="activity-time">10 menit lalu</div></div></li>
+              <li class="activity-item"><i class="fa-solid fa-circle-dot" style="color: #10b981;"></i> <div>Budi Santoso menyelesaikan Wireframe Mobile App<div class="activity-time">1 jam lalu</div></div></li>
+              <li class="activity-item"><i class="fa-solid fa-circle-dot" style="color: #8b5cf6;"></i> <div>Siti Rahma memperbarui Timeline Proyek Q3<div class="activity-time">3 jam lalu</div></div></li>
+            </ul>
+          </div>
+          <div class="widget-card">
+            <h3><i class="fa-solid fa-fire"></i> Jobdesk Prioritas Tinggi</h3>
+            <table class="compact-table">
+              <thead>
+                <tr><th>Tugas</th><th>Penanggung Jawab</th><th>Status</th></tr>
+              </thead>
+              <tbody id="priority-jobs-body">
+                <tr><td>Slicing Frontend Landing Page</td><td>Noufal Rizqi</td><td><span class="badge-status badge-progress">Sedang Dikerjakan</span></td></tr>
+                <tr><td>Integrasi Database MySQL</td><td>Noufal Rizqi</td><td><span class="badge-status badge-todo">Belum Dimulai</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Noufal Central Apps - Data Karyawan</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="app-container">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <i class="fa-solid fa-layer-group"></i>
+        <span>Noufal Central</span>
+      </div>
+      <nav class="sidebar-menu">
+        <a href="index.html" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Beranda</a>
+        <a href="karyawan.html" class="nav-item active"><i class="fa-solid fa-users"></i> Data Karyawan</a>
+        <a href="jobdesk.html" class="nav-item"><i class="fa-solid fa-list-check"></i> Jobdesk & Tugas</a>
+        <a href="infografis.html" class="nav-item"><i class="fa-solid fa-chart-line"></i> Infografis & Analitik</a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" alt="Avatar" class="user-avatar" />
+          <div class="user-details">
+            <span>Admin User</span>
+            <small>Administrator</small>
+          </div>
+        </div>
+        <button class="btn-logout" onclick="logout()" title="Keluar"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-title">
+          <h1>Data Karyawan</h1>
+          <p>Manajemen profil dan divisi karyawan aktif</p>
+        </div>
+        <button class="btn btn-primary" onclick="openEmployeeModal()"><i class="fa-solid fa-plus"></i> Tambah Karyawan</button>
+      </header>
+
+      <section class="page-content">
+        <div class="employee-grid" id="employee-grid-container">
+          <div class="employee-card">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" class="emp-avatar-large" alt="Noufal Rizqi" />
+            <div class="emp-name">Noufal Rizqi</div>
+            <div class="emp-role">Software Developer</div>
+            <div class="emp-division">Software Development</div>
+            <div class="emp-card-actions">
+              <button class="btn btn-secondary btn-sm" onclick="deleteEmployee(1)"><i class="fa-solid fa-trash"></i> Hapus</button>
+            </div>
+          </div>
+          <div class="employee-card">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150" class="emp-avatar-large" alt="Budi Santoso" />
+            <div class="emp-name">Budi Santoso</div>
+            <div class="emp-role">UI/UX Designer</div>
+            <div class="emp-division">UI/UX Design</div>
+            <div class="emp-card-actions">
+              <button class="btn btn-secondary btn-sm" onclick="deleteEmployee(2)"><i class="fa-solid fa-trash"></i> Hapus</button>
+            </div>
+          </div>
+          <div class="employee-card">
+            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150" class="emp-avatar-large" alt="Siti Rahma" />
+            <div class="emp-name">Siti Rahma</div>
+            <div class="emp-role">Project Manager</div>
+            <div class="emp-division">Project Management</div>
+            <div class="emp-card-actions">
+              <button class="btn btn-secondary btn-sm" onclick="deleteEmployee(3)"><i class="fa-solid fa-trash"></i> Hapus</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- MODAL EMPLOYEES -->
+  <div class="modal-overlay hidden" id="employee-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Tambah Karyawan Baru</h3>
+        <button class="btn-close" onclick="closeEmployeeModal()">&times;</button>
+      </div>
+      <form onsubmit="saveEmployee(event)">
+        <div class="form-group"><label>Nama Lengkap</label><input type="text" id="emp-name" required placeholder="Contoh: Andi Wijaya" /></div>
+        <div class="form-group"><label>Jabatan / Role</label><input type="text" id="emp-role" required placeholder="Contoh: Backend Developer" /></div>
+        <div class="form-group">
+          <label>Divisi</label>
+          <select id="emp-division">
+            <option value="Software Development">Software Development</option>
+            <option value="UI/UX Design">UI/UX Design</option>
+            <option value="Project Management">Project Management</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Foto Avatar URL</label><input type="url" id="emp-avatar" placeholder="https://..." /></div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeEmployeeModal()">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Noufal Central Apps - Jobdesk & Tugas</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="app-container">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <i class="fa-solid fa-layer-group"></i>
+        <span>Noufal Central</span>
+      </div>
+      <nav class="sidebar-menu">
+        <a href="index.html" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Beranda</a>
+        <a href="karyawan.html" class="nav-item"><i class="fa-solid fa-users"></i> Data Karyawan</a>
+        <a href="jobdesk.html" class="nav-item active"><i class="fa-solid fa-list-check"></i> Jobdesk & Tugas</a>
+        <a href="infografis.html" class="nav-item"><i class="fa-solid fa-chart-line"></i> Infografis & Analitik</a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" alt="Avatar" class="user-avatar" />
+          <div class="user-details">
+            <span>Admin User</span>
+            <small>Administrator</small>
+          </div>
+        </div>
+        <button class="btn-logout" onclick="logout()" title="Keluar"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-title">
+          <h1>Kanban Management Jobdesk</h1>
+          <p>Alur pengerjaan dan pembagian tugas tim</p>
+        </div>
+        <button class="btn btn-primary" onclick="openJobdeskModal()"><i class="fa-solid fa-plus"></i> Buat Jobdesk Baru</button>
+      </header>
+
+      <section class="page-content">
+        <div class="kanban-board">
+          <div class="kanban-column">
+            <div class="column-header column-todo"><span>Belum Dimulai</span><span class="badge" id="count-todo">1</span></div>
+            <div class="kanban-cards" id="kanban-todo">
+              <div class="kanban-card">
+                <div class="kanban-title">Desain Wireframe Mobile App</div>
+                <div class="kanban-meta">
+                  <span><i class="fa-solid fa-user"></i> Budi Santoso</span>
+                  <span class="badge-status badge-todo">Sedang</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="kanban-column">
+            <div class="column-header column-progress"><span>Sedang Dikerjakan</span><span class="badge" id="count-progress">1</span></div>
+            <div class="kanban-cards" id="kanban-progress">
+              <div class="kanban-card">
+                <div class="kanban-title">Slicing Frontend Landing Page</div>
+                <div class="kanban-meta">
+                  <span><i class="fa-solid fa-user"></i> Noufal Rizqi</span>
+                  <span class="badge-status badge-progress">Tinggi</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="kanban-column">
+            <div class="column-header column-done"><span>Selesai</span><span class="badge" id="count-done">1</span></div>
+            <div class="kanban-cards" id="kanban-done">
+              <div class="kanban-card">
+                <div class="kanban-title">Penyusunan Timeline Proyek Q3</div>
+                <div class="kanban-meta">
+                  <span><i class="fa-solid fa-user"></i> Siti Rahma</span>
+                  <span class="badge-status badge-todo">Rendah</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- MODAL JOBDESK -->
+  <div class="modal-overlay hidden" id="jobdesk-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Buat Jobdesk Baru</h3>
+        <button class="btn-close" onclick="closeJobdeskModal()">&times;</button>
+      </div>
+      <form onsubmit="saveJobdesk(event)">
+        <div class="form-group"><label>Judul Jobdesk</label><input type="text" id="job-title" required placeholder="Contoh: Testing API Database" /></div>
+        <div class="form-group"><label>Penanggung Jawab</label><select id="job-assignee"></select></div>
+        <div class="form-group">
+          <label>Prioritas</label>
+          <select id="job-priority">
+            <option value="Rendah">Rendah</option>
+            <option value="Sedang" selected>Sedang</option>
+            <option value="Tinggi">Tinggi</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select id="job-status">
+            <option value="todo">Belum Dimulai</option>
+            <option value="progress">Sedang Dikerjakan</option>
+            <option value="done">Selesai</option>
+          </select>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeJobdeskModal()">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Noufal Central Apps - Infografis & Analitik</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="app-container">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <i class="fa-solid fa-layer-group"></i>
+        <span>Noufal Central</span>
+      </div>
+      <nav class="sidebar-menu">
+        <a href="index.html" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Beranda</a>
+        <a href="karyawan.html" class="nav-item"><i class="fa-solid fa-users"></i> Data Karyawan</a>
+        <a href="jobdesk.html" class="nav-item"><i class="fa-solid fa-list-check"></i> Jobdesk & Tugas</a>
+        <a href="infografis.html" class="nav-item active"><i class="fa-solid fa-chart-line"></i> Infografis & Analitik</a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" alt="Avatar" class="user-avatar" />
+          <div class="user-details">
+            <span>Admin User</span>
+            <small>Administrator</small>
+          </div>
+        </div>
+        <button class="btn-logout" onclick="logout()" title="Keluar"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-title">
+          <h1>Infografis & Analitik</h1>
+          <p>Laporan visual performa perusahaan</p>
+        </div>
+      </header>
+
+      <section class="page-content">
+        <div class="infographic-grid">
+          <div class="info-card gradient-1">
+            <div class="info-content">
+              <h3>Statistik Produktivitas Tim</h3>
+              <p>Penyelesaian jobdesk mencapai <strong>88.4%</strong> tepat waktu pada kuartal ini.</p>
+              <div class="progress-bar-container"><div class="progress-fill" style="width: 88.4%;"></div></div>
+            </div>
+            <i class="fa-solid fa-chart-line bg-icon"></i>
+          </div>
+          <div class="info-card gradient-2">
+            <div class="info-content">
+              <h3>Distribusi Divisi</h3>
+              <p>Divisi Software Development memegang proyek terbanyak (45%).</p>
+            </div>
+            <i class="fa-solid fa-diagram-project bg-icon"></i>
+          </div>
+        </div>
+
+        <div class="charts-section">
+          <div class="chart-box">
+            <h3><i class="fa-solid fa-chart-column"></i> Performa Penyelesaian Tugas Bulanan</h3>
+            <div class="bar-chart-visual">
+              <div class="bar-group"><div class="bar" style="height: 60%;"></div><span>Jan</span></div>
+              <div class="bar-group"><div class="bar" style="height: 75%;"></div><span>Feb</span></div>
+              <div class="bar-group"><div class="bar" style="height: 50%;"></div><span>Mar</span></div>
+              <div class="bar-group"><div class="bar" style="height: 85%;"></div><span>Apr</span></div>
+              <div class="bar-group"><div class="bar" style="height: 95%;"></div><span>Mei</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
